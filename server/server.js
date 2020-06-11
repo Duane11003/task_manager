@@ -10,7 +10,8 @@ app.use(express.urlencoded({ extended: true }));
 
 
 
-app.get('/addtask', TaskController.addTask)
+app.post('/addtask', TaskController.addTask, TaskController.getTask)
+app.delete('/deletetask', TaskController.deleteTask, TaskController.getTask)
 
 
 

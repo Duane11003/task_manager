@@ -2,6 +2,7 @@ const pool = require("../model/TaskModel");
 
 const taskController = {};
 
+// add task
 taskController.addTask = (req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
   const values = [req.body.title, req.body.description, req.body.deadline];
@@ -10,10 +11,38 @@ taskController.addTask = (req, res, next) => {
     if (err) {
       console.warn(err, "is the error");
     } else {
-      res.status(200);
+      console.log(data.rows);
     }
   });
   next();
+};
+
+// read all tasks
+taskController.getTask = (req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  const QUERY_STRING = `SELECT * FROM tasks`;
+  pool.query(QUERY_STRING, (err, data) => {
+    if (err) {
+      console.warn(err, "error reading from database");
+    } else {
+      console.log(data.rows);
+      res.send(data.rows);
+    }
+  });
+};
+
+// delete tasks
+taskController.deleteTask = (req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  const QUERY_STRING = `DELETE FROM tasks WHERE id = ${req.body.id}`
+  pool.query(QUERY_STRING, (err, data) => {
+    if (err) {
+      console.warn(err, 'error deleting from database')
+    } else {
+      res.status(200)
+    }
+  })
+  next()
 };
 
 module.exports = taskController;
