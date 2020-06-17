@@ -31,18 +31,40 @@ taskController.getTask = (req, res, next) => {
   });
 };
 
+//edit task
+taskController.updatetask = (req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  const requestId = req.params.id;
+  const { title, description, deadline } = req.body;
+  const QUERY_STRING = `UPDATE tasks 
+  SET title = $1, description = $2, deadline = $3
+  WHERE id = $4`;
+  pool.query(
+    QUERY_STRING,
+    [title, description, deadline, requestId],
+    (err, data) => {
+      if (err) {
+        console.warn(err, "error updating tasks");
+      } else {
+        res.status(200);
+      }
+    }
+  );
+  next();
+};
+
 // delete tasks
 taskController.deleteTask = (req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
-  const QUERY_STRING = `DELETE FROM tasks WHERE id = ${req.body.id}`
+  const QUERY_STRING = `DELETE FROM tasks WHERE id = ${req.body.id}`;
   pool.query(QUERY_STRING, (err, data) => {
     if (err) {
-      console.warn(err, 'error deleting from database')
+      console.warn(err, "error deleting from database");
     } else {
-      res.status(200)
+      res.status(200);
     }
-  })
-  next()
+  });
+  next();
 };
 
 module.exports = taskController;
