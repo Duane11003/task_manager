@@ -1,10 +1,11 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import Tasks from "./Components/Tasks/Tasks";
 
 function App() {
   return (
     <div>
-      <p>Hello World!!!</p>
+      <Tasks />
     </div>
   );
 }
